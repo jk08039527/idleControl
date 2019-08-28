@@ -1,0 +1,66 @@
+<resources>
+
+    <!-- 下拉刷新 -->
+    <string name="pull_to_refresh_pull_label">下拉刷新…</string>
+    <string name="pull_to_refresh_release_label">放开以刷新…</string>
+    <string name="pull_to_refresh_refreshing_label">正在载入…</string>
+    <string name="pull_to_refresh_complete">更新完成</string>
+    <string name="no_more_data">我是有底线的</string>
+    <string name="loading">正在加载…</string>
+    <string name="confirm">确定</string>
+    <string name="allowed">允许</string>
+    <string name="notice">提示</string>
+    <string name="cancel">取消</string>
+    <string name="really_delete">确认删除吗</string>
+    <string name="init">初始化</string>
+    <string name="setting">设置</string>
+    <string name="address_detail">发货地址</string>
+    <string name="publish_count">发布次数</string>
+    <string name="protype">类目</string>
+    <string name="fish_pond">鱼塘</string>
+    <string name="no_network">网络不给力，请检查网络连接后再试！</string>
+    <string name="time_setting">时间设置</string>
+    <string name="format_hour_min">%1$02d%2$s</string>
+    <string name="format_time">%1$02d:%2$02d</string>
+    <string name="advertisement_link">代理链接</string>
+    <string name="cache_clear">缓存清理</string>
+    <string name="picture_path">图片路径</string>
+    <string name="app_version">版本号</string>
+    <string name="name_version">%1$s</string>
+    <string name="rmb_how">¥%1$s</string>
+
+    <string name="guanwang">阿翔官网</string>
+    <string name="restore">还原</string>
+    <string name="backuprestore">云端备份/还原</string>
+    <string name="backupdetail">备份详情</string>
+    <string name="phone_num">手机号</string>
+    <string name="passwd">密码</string>
+    <string name="confirm_passwd">确认密码</string>
+    <string name="order_detail">订单详情</string>
+    <string name="trans_state">交易状态</string>
+    <string name="trans_time">交易时间</string>
+    <string name="aliid">支付宝交易号</string>
+    <string name="buyer_name">买家昵称</string>
+    <string name="receiver">收货人</string>
+    <string name="receiver_mobile">收货人电话</string>
+    <string name="receiver_addr">收获地址</string>
+    <string name="logisticsid">物流单号</string>
+    <string name="logisticscm">物流公司</string>
+    <string name="delete">删除</string>
+    <string name="edit">编辑</string>
+    <string name="app_not_install">应用未安装</string>
+    <string name="sure_cover_remote">确认覆盖云端数据吗？</string>
+    <string name="cover_remote">覆盖云端</string>
+    <string name="add_to_local">添加到本地</string>
+    <string name="select">选择</string>
+    <string name="all_sel">全选</string>
+    <string name="all_not_sel">全不选</string>
+    <string name="bind">绑定</string>
+    <string name="add">添加</string>
+    <string name="login">登录</string>
+    <string name="collect">采集</string>
+    <string name="collection">收藏</string>
+    <string name="username">用户名</string>
+    <string name="superlike">超赞</string>
+    <string name="iwant">我想要</string>
+</resources>

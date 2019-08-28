@@ -1,0 +1,50 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion build_versions.target_sdk
+
+    defaultConfig {
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        versionCode 1
+        versionName "1.0"
+        multiDexEnabled = true
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    repositories {
+        flatDir { dirs 'libs' }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api deps.support.v4
+    api deps.support.app_compat
+    api deps.support.recyclerview
+    api deps.constraint_layout
+
+    api deps.okhttp.okhttp
+    api deps.okhttp.okio
+
+    api deps.support.multidex
+    api deps.tencent.bugly_upgrade
+    api deps.tencent.bugly_nativecrashreport
+    api deps.tencent.bugly_tinker
+    api deps.glide
+    api deps.fastjson
+}

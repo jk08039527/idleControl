@@ -1,0 +1,155 @@
+apply plugin: 'com.android.application'
+apply plugin: 'AndResGuard'
+// 依赖插件脚本
+apply from: '../tinker-support.gradle'
+def releaseAPKs = file("${buildDir}/outputs/apk/release")
+def keystoreDir = file(rootDir.getAbsolutePath() + "/keystore")
+
+static def fileNameDate() {
+    return new Date().format("MMddHHmm", TimeZone.getDefault())
+}
+
+
+android {
+
+    signingConfigs {
+        config {
+            keyAlias 'idlefish'
+            keyPassword '999999'
+            storeFile new File(keystoreDir, "idlefish.keystore")
+            storePassword '999999'
+            v2SigningEnabled false
+        }
+    }
+
+    compileSdkVersion build_versions.target_sdk
+    defaultConfig {
+        applicationId packer.APPLICATION_ID
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        versionCode packer.VERSION_CODE
+        versionName packer.VERSION_NAME
+        multiDexEnabled = true
+
+        buildConfigField("String", "APPNAME", '"idleControler"')
+        buildConfigField("String", "BUGLY_APP_ID", '"ba474685eb"')
+        buildConfigField("String", "FILE_PROVIDER", '"com.jerry.control.fileProvider"')
+        buildConfigField("String", "SIGN", '"s1d8124ec4zm2s2c839saeu72g3d34c0"')
+
+        ndk {
+            // 设置支持的SO库架构
+            abiFilters 'armeabi'
+        }
+
+        packagingOptions {
+            exclude 'META-INF/DEPENDENCIES'
+            exclude 'META-INF/NOTICE'
+            exclude 'META-INF/LICENSE'
+            exclude 'META-INF/LICENSE.txt'
+            exclude 'META-INF/NOTICE.txt'
+        }
+    }
+    buildTypes {
+        release {
+            //设置混淆
+            minifyEnabled true
+            shrinkResources true
+            zipAlignEnabled true
+            pseudoLocalesEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
+            applicationVariants.all { variant ->
+                tasks.all {
+                    if (it.name.contains("resguardRelease")) {
+                        it.doLast {
+                            variant.outputs.each { output ->
+                                if (releaseAPKs.exists()) {
+                                    releaseAPKs.eachFile { file ->
+                                        if (file.name.startsWith(packer.SRC_DIR)) {
+                                            file.delete()
+                                        }
+                                    }
+
+                                    if (file("${releaseAPKs}/AndResGuard_app-release/app-release_signed_7zip_aligned.apk").exists()) {
+                                        copy {
+                                            from "${releaseAPKs}/AndResGuard_app-release/app-release_signed_7zip_aligned.apk"
+                                            into file("${releaseAPKs}")
+                                            rename { String fileName ->
+                                                "${packer.SRC_DIR}_v${defaultConfig.versionName}_${fileNameDate()}.apk"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        debug {
+            minifyEnabled false
+            signingConfig signingConfigs.config
+        }
+    }
+
+    sourceSets {
+        main {
+            java.srcDirs = ["src/main/java", "src/${packer.SRC_DIR}/java"]
+            res.srcDirs = ["src/main/res", "src/${packer.SRC_DIR}/res"]
+        }
+    }
+
+
+    repositories {
+        flatDir { dirs 'libs' }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation project(path: ':baselib')
+}
+
+andResGuard {
+    // mappingFile = file("./resource_mapping.txt")
+    mappingFile = null
+    use7zip = true
+    useSign = true
+    keepRoot = false
+    whiteList = [
+            // for your icon
+            "R.drawable.icon",
+            // for fabric
+            "R.string.com.crashlytics.*",
+            // for google-services
+            "R.string.google_app_id",
+            "R.string.gcm_defaultSenderId",
+            "R.string.default_web_client_id",
+            "R.string.ga_trackingId",
+            "R.string.firebase_database_url",
+            "R.string.google_api_key",
+            "R.string.google_crash_reporting_api_key",
+            "R.id.webView",
+    ]
+    compressFilePattern = [
+            "*.png",
+            "*.jpg",
+            "*.jpeg",
+            "*.gif",
+            "resources.arsc"
+    ]
+    sevenzip {
+        artifact = 'com.tencent.mm:SevenZip:1.2.15'
+//        path = "/usr/local/bin/7za"
+    }
+}

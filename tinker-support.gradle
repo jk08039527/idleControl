@@ -1,0 +1,165 @@
+apply plugin: 'com.tencent.bugly.tinker-support'
+
+def bakPath = file("${buildDir}/bakApk/")
+
+/**
+ * 此处填写每次构建生成的基准包目录
+ */
+def baseApkDir = "resguard-0426-16-20-02"
+
+/**
+ * 对于插件各参数的详细解析请参考
+ */
+tinkerSupport {
+
+    // 开启tinker-support插件，默认值true
+    enable = true
+
+    ignoreWarning = true
+
+    supportHotplugComponent = false
+
+    // 指定归档目录，默认值当前module的子目录tinker
+    autoBackupApkDir = "${bakPath}"
+
+    // 是否启用覆盖tinkerPatch配置功能，默认值false
+    // 开启后tinkerPatch配置不生效，即无需添加tinkerPatch
+    overrideTinkerPatchConfiguration = true
+
+    // 编译补丁包时，必需指定基线版本的apk，默认值为空
+    // 如果为空，则表示不是进行补丁包的编译
+    // @{link tinkerPatch.oldApk }
+    baseApk = "${bakPath}/${baseApkDir}/app-release.apk"
+
+    // 对应tinker插件applyMapping
+    baseApkProguardMapping = "${bakPath}/${baseApkDir}/app-release-mapping.txt"
+
+    // 对应tinker插件applyResourceMapping
+    baseApkResourceMapping = "${bakPath}/${baseApkDir}/app-release-R.txt"
+
+    tinkerId = "bugly_" + System.currentTimeMillis()
+
+//    buildAllFlavorsDir = "${bakPath}/${baseApkDir}"
+
+    //是否开启加固
+    isProtectedApp = true
+
+    enableProxyApplication = false
+}
+
+android.applicationVariants.all { variant ->
+
+    //debug构建完成后，删除bakPath
+    gradle.buildFinished {
+        if (bakPath.exists()) {
+            bakPath.eachDir { file ->
+                if (file.getName().contains('app')) {
+                    delete(file)
+                }
+            }
+            def fileNames = bakPath.list()
+            if (fileNames == null || fileNames.size() == 0) {
+                delete(bakPath)
+            }
+        }
+    }
+    def taskName = variant.name
+
+    tasks.all {
+        if (it.name.contains("tinker") || it.name.contains("Tinker")) {
+            it.enabled = true
+        }
+        if (variant.buildType.name == 'release') {
+            if ("tinkerPatch${taskName.capitalize()}".equalsIgnoreCase(it.name)) {
+
+                // find resguard task
+                def resguardTask
+                tasks.all {
+                    if ("resguardRelease".equals(it.name)) {
+                        resguardTask = it
+                    }
+                }
+                it.doFirst({
+                    // change build apk path
+                    it.buildApkPath = "${buildDir}/outputs/apk/release/AndResGuard_${project.getName()}-${taskName}/${project.getName()}-${taskName}_signed.apk"
+                })
+
+                // change task dependence to resguard task
+                it.dependsOn resguardTask
+            }
+
+            if ("resguard${taskName.capitalize()}".equalsIgnoreCase(it.name)) {
+                it.doLast {
+                    def date = new Date().format("MMdd-HH-mm-ss")
+                    def resguardDir = "/resguard-${date}"
+                    copy {
+                        from "${buildDir}/outputs/apk/release/AndResGuard_${project.getName()}-${taskName}/${project.getName()}-${taskName}_signed_7zip_aligned.apk"
+                        into file(bakPath.absolutePath + resguardDir)
+                        rename { String fileName ->
+                            fileName.replace("${project.getName()}-${taskName}_signed_7zip_aligned.apk", "${project.getName()}-${taskName}.apk")
+                        }
+
+                        from "${buildDir}/outputs/mapping/${taskName}/mapping.txt"
+                        into file(bakPath.absolutePath + resguardDir)
+                        rename { String fileName ->
+                            fileName.replace("mapping.txt", "${project.getName()}-${taskName}-mapping.txt")
+                        }
+
+                        from "${buildDir}/intermediates/symbols/${taskName}/R.txt"
+                        into file(bakPath.absolutePath + resguardDir)
+                        rename { String fileName ->
+                            fileName.replace("R.txt", "${project.getName()}-${taskName}-R.txt")
+                        }
+                        from "${buildDir}/outputs/apk/release/AndResGuard_${project.getName()}-${taskName}/resource_mapping_${project.getName()}-release.txt"
+                        into file(bakPath.absolutePath + resguardDir)
+                        rename { String fileName ->
+                            fileName.replace("resource_mapping_${project.getName()}-release.txt", "${project.getName()}-${taskName}-resource_mapping.txt")
+                        }
+                    }
+                }
+            }
+        } else {
+            if (it.name.contains("tinker") || it.name.contains("Tinker")) {
+                it.enabled = false
+            }
+        }
+    }
+}
+
+/**
+ * 一般来说,我们无需对下面的参数做任何的修改
+ * 对于各参数的详细介绍请参考:
+ * https://github.com/Tencent/tinker/wiki/Tinker-%E6%8E%A5%E5%85%A5%E6%8C%87%E5%8D%97
+ */
+tinkerPatch {
+    //oldApk ="${bakPath}/${appName}/app-release.apk"
+    ignoreWarning = false
+    useSign = true
+    dex {
+        dexMode = "jar"
+        pattern = ["classes*.dex"]
+        loader = []
+    }
+    lib {
+        pattern = ["lib/*/*.so"]
+    }
+
+    res {
+        pattern = ["res/*", "r/*", "assets/*", "resources.arsc", "AndroidManifest.xml"]
+        ignoreChange = []
+        largeModSize = 100
+    }
+
+    packageConfig {
+    }
+    sevenZip {
+        zipArtifact = "com.tencent.mm:SevenZip:1.1.10"
+//        path = "/usr/local/bin/7za"
+    }
+    buildConfig {
+        keepDexApply = false
+        //tinkerId = "1.0.1-patch"
+        //applyMapping = "${bakPath}/${appName}/app-release-mapping.txt" //  可选，设置mapping文件，建议保持旧apk的proguard混淆方式
+        //applyResourceMapping = "${bakPath}/${appName}/app-release-R.txt" // 可选，设置R.txt文件，通过旧apk文件保持ResId的分配
+    }
+}
