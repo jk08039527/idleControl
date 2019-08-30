@@ -2,7 +2,6 @@ package com.jerry.control.adduser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.TreeMap;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -22,6 +21,7 @@ import com.jerry.baselib.common.util.OnDataChangedListener;
 import com.jerry.baselib.common.util.ToastUtil;
 import com.jerry.baselib.common.weidgt.BaseDialog;
 import com.jerry.control.R;
+import com.jerry.control.bean.BaseRequest;
 import com.jerry.control.bean.SelectBean;
 import com.jerry.control.bean.User;
 
@@ -127,17 +127,17 @@ public class AdduserDialog extends BaseDialog implements BaseRecyclerAdapter.OnI
                     time = System.currentTimeMillis() + daytime * 99999;
                     break;
             }
-            TreeMap<String, String> params = new TreeMap<>();
-            params.put("jsonrpc", "2.0");
-            params.put("method", "User\\\\Login.createAbc123");
-            params.put("id", "cd0876cbf1e6b09d10b7ad40e4de9169");
             List<User> users = new ArrayList<>();
             User user = new User();
             user.setUsername(etPhone.getText().toString());
             user.setUserpwd("J123456");
             users.add(user);
-            params.put("params", JSON.toJSONString(users));
-            OkHttpUtils.post().url("http://47.107.32.113:81").params(params).build().enqueue(new Callback() {
+            BaseRequest<User> userBaseRequest = new BaseRequest<>();
+            userBaseRequest.setId("cd0876cbf1e6b09d10b7ad40e4de9169");
+            userBaseRequest.setMethod("User\\Login.createAbc123");
+            userBaseRequest.setJsonrpc("2.0");
+            userBaseRequest.setParams(users);
+            OkHttpUtils.post().url("http://47.107.32.113:81").body(JSON.toJSONString(userBaseRequest)).build().enqueue(new Callback() {
                 @Override
                 public void onResponse(final Object response) {
                     LogUtils.d("fsdfs");
