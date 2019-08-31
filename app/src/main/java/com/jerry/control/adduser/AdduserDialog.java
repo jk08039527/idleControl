@@ -3,30 +3,27 @@ package com.jerry.control.adduser;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import com.jerry.baselib.common.base.BaseRecyclerAdapter;
-import com.jerry.baselib.common.okhttp.OkHttpUtils;
-import com.jerry.baselib.common.okhttp.callback.Callback;
+import com.jerry.baselib.common.retrofit.RetrofitHelper;
+import com.jerry.baselib.common.retrofit.callback.RetrofitCallBack;
+import com.jerry.baselib.common.retrofit.response.BaseResponse;
+import com.jerry.baselib.common.retrofit.response.ResponseResult;
 import com.jerry.baselib.common.util.LogUtils;
 import com.jerry.baselib.common.util.OnDataChangedListener;
 import com.jerry.baselib.common.util.ToastUtil;
 import com.jerry.baselib.common.weidgt.BaseDialog;
+import com.jerry.control.Api;
 import com.jerry.control.R;
 import com.jerry.control.bean.BaseRequest;
 import com.jerry.control.bean.SelectBean;
 import com.jerry.control.bean.User;
-
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * @author Jerry
@@ -36,13 +33,12 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class AdduserDialog extends BaseDialog implements BaseRecyclerAdapter.OnItemClickListener {
 
-    private String[] pate = {"一天", "一个月", "三个月", "半年", "一年", "永久"};
+    private String[] pate = {"一天", "一个月", "半年", "一年"};
     private EditText etPhone;
+    private EditText etPwd;
     private TagItemAdapter mAdapter;
     private List<SelectBean> mData = new ArrayList<>();
     private OnDataChangedListener<User> mOnDataChangedListener;
-    private String phone;
-    private String passwd;
 
     public AdduserDialog(Context context) {
         super(context);
@@ -59,26 +55,7 @@ public class AdduserDialog extends BaseDialog implements BaseRecyclerAdapter.OnI
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         etPhone = findViewById(R.id.et_phone);
-        etPhone.setText(phone);
-        if (TextUtils.isEmpty(passwd)) {
-            findViewById(R.id.tv_code).setVisibility(View.GONE);
-        } else {
-            TextView tvCode = findViewById(R.id.tv_code);
-            tvCode.setText(passwd);
-            tvCode.setVisibility(View.VISIBLE);
-            tvCode.setOnLongClickListener(v -> {
-                ClipboardManager cm = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
-                if (cm == null) {
-                    ToastUtil.showShortText("复制失败");
-                    return true;
-                }
-                ClipData mClipData = ClipData.newPlainText("Label", tvCode.getText().toString());
-                //将ClipData内容放到系统剪贴板里
-                cm.setPrimaryClip(mClipData);
-                ToastUtil.showShortText("激活码已复制");
-                return true;
-            });
-        }
+        etPwd = findViewById(R.id.et_pwd);
         RecyclerView rvTags = findViewById(R.id.rv_tags);
         rvTags.setLayoutManager(new GridLayoutManager(mContext, 3));
         rvTags.setAdapter(mAdapter);
@@ -104,56 +81,41 @@ public class AdduserDialog extends BaseDialog implements BaseRecyclerAdapter.OnI
                     break;
                 }
             }
-            long time;
-            long daytime = 1000 * 60 * 60 * 24;
-            switch (mData.get(selext).getTitle()) {
-                case "一天":
-                    time = System.currentTimeMillis() + daytime;
-                    break;
-                case "一个月":
-                    time = System.currentTimeMillis() + daytime * 30;
-                    break;
-                case "三个月":
-                    time = System.currentTimeMillis() + daytime * 92;
-                    break;
-                case "半年":
-                    time = System.currentTimeMillis() + daytime * 183;
-                    break;
-                case "一年":
-                    time = System.currentTimeMillis() + daytime * 365;
-                    break;
-                case "永久":
-                default:
-                    time = System.currentTimeMillis() + daytime * 99999;
-                    break;
-            }
             List<User> users = new ArrayList<>();
             User user = new User();
             user.setUsername(etPhone.getText().toString());
-            user.setUserpwd("J123456");
+            user.setUserpwd(etPwd.getText().toString());
+            user.setLevel(selext);
             users.add(user);
             BaseRequest<User> userBaseRequest = new BaseRequest<>();
-            userBaseRequest.setId("cd0876cbf1e6b09d10b7ad40e4de9169");
             userBaseRequest.setMethod("User\\Login.createAbc123");
-            userBaseRequest.setJsonrpc("2.0");
             userBaseRequest.setParams(users);
-            OkHttpUtils.post().url("http://47.107.32.113:81").body(JSON.toJSONString(userBaseRequest)).build().enqueue(new Callback() {
-                @Override
-                public void onResponse(final Object response) {
-                    LogUtils.d("fsdfs");
-                }
+            RetrofitHelper.getInstance().getApi(Api.class).addUser(userBaseRequest)
+                .execute(new RetrofitCallBack<BaseResponse<Boolean>>() {
+                    @Override
+                    public void onResponse(final BaseResponse<Boolean> response) {
+                        ResponseResult<Boolean> result = response.getResult();
+                        if (result == null) {
+                            return;
+                        }
+                        int code = result.getCode();
+                        if (code == 0) {
+                            ToastUtil.showLongText("添加成功");
+                            dismiss();
+                            if (mOnDataChangedListener != null) {
+                                mOnDataChangedListener.onDataChanged(null);
+                            }
+                            return;
+                        }
+                        ToastUtil.showLongText("错误码：" + result.getCode() + "\nMsg：" + result.getMsg());
+                    }
 
-                @Override
-                public void onError(final String msg) {
-                    LogUtils.e("error");
-                }
-            });
+                    @Override
+                    public void onError(final String msg) {
+                        LogUtils.e("error");
+                    }
+                });
         });
-    }
-
-    public void setPhonePassWd(String phone, String passwd) {
-        this.phone = phone;
-        this.passwd = passwd;
     }
 
     public void setOnDataChangedListener(OnDataChangedListener<User> onDataChangedListener) {

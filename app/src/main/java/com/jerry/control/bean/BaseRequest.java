@@ -10,16 +10,9 @@ import java.util.List;
  */
 public class BaseRequest<T> {
 
-    /**
-     * jsonrpc : 2.0
-     * method : User\Login.createAbc123
-     * id : cd0876cbf1e6b09d10b7ad40e4de9169
-     * params : [{"username":"oyp1212","userpwd":"1234567"}]
-     */
-
-    private String jsonrpc;
+    private String jsonrpc = "2.0";
     private String method;
-    private String id;
+    private String id = "cd0876cbf1e6b09d10b7ad40e4de9169";
     private List<T> params;
 
     public String getJsonrpc() {

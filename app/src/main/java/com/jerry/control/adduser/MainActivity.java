@@ -1,5 +1,7 @@
 package com.jerry.control.adduser;
 
+import java.util.List;
+
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -7,7 +9,14 @@ import android.view.View;
 
 import com.jerry.baselib.common.base.BaseRecyclerActivity;
 import com.jerry.baselib.common.base.BaseRecyclerAdapter;
+import com.jerry.baselib.common.retrofit.RetrofitHelper;
+import com.jerry.baselib.common.retrofit.callback.RetrofitCallBack;
+import com.jerry.baselib.common.retrofit.response.BaseResponse;
+import com.jerry.baselib.common.retrofit.response.ResponseResult;
+import com.jerry.baselib.common.util.LogUtils;
+import com.jerry.control.Api;
 import com.jerry.control.R;
+import com.jerry.control.bean.BaseRequest;
 import com.jerry.control.bean.User;
 
 public class MainActivity extends BaseRecyclerActivity<User> implements BaseRecyclerAdapter.OnItemLongClickListener {
@@ -28,7 +37,42 @@ public class MainActivity extends BaseRecyclerActivity<User> implements BaseRecy
 
     @Override
     protected void getData() {
+        BaseRequest<User> userBaseRequest = new BaseRequest<>();
+        userBaseRequest.setMethod("User\\Login.getListBzm123");
+        RetrofitHelper.getInstance().getApi(Api.class).getList(userBaseRequest)
+            .execute(new RetrofitCallBack<BaseResponse<List<User>>>() {
+                @Override
+                public void onResponse(final BaseResponse<List<User>> response) {
+                    if (isFinishing()) {
+                        return;
+                    }
+                    ResponseResult<List<User>> result = response.getResult();
+                    if (result == null) {
+                        return;
+                    }
+                    List<User> users = result.getData();
+                    mData.clear();
+                    mData.addAll(users);
+                    mAdapter.notifyDataSetChanged();
+                }
 
+                @Override
+                public void onError(final String msg) {
+                    if (isFinishing()) {
+                        return;
+                    }
+                    LogUtils.e("error:" + msg);
+                }
+
+                @Override
+                public void onAfter() {
+                    if (isFinishing()) {
+                        return;
+                    }
+                    closeLoadingDialog();
+                    mPtrRecyclerView.onRefreshComplete();
+                }
+            });
     }
 
     @Override
@@ -45,7 +89,6 @@ public class MainActivity extends BaseRecyclerActivity<User> implements BaseRecy
     public void onItemClick(View itemView, int position) {
         User user = mData.get(position);
         AdduserDialog adduserDialog = new AdduserDialog(this);
-        adduserDialog.setPhonePassWd(user.getUsername(), user.getUserpwd());
         adduserDialog.setOnDataChangedListener(data -> reload());
         adduserDialog.show();
     }

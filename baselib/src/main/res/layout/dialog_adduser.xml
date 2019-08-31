@@ -12,33 +12,33 @@
         android:gravity="center"
         android:text="@string/add"
         android:textColor="@color/primary_text_color"
-        android:textSize="@dimen/_17sp" />
+        android:textSize="@dimen/_17sp"/>
 
     <EditText
         android:id="@+id/et_phone"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_45dp"
+        android:padding="5dp"
         android:background="@drawable/edit_bg"
-        android:hint="手机号"
+        android:hint="账号"
         android:inputType="phone"
         android:maxLength="11"
-        android:padding="5dp"
-        android:textSize="16sp" />
+        android:textSize="16sp"/>
 
-    <TextView
-        android:id="@+id/tv_code"
+    <EditText
+        android:id="@+id/et_pwd"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/edit_bg"
-        android:hint="激活码"
+        android:layout_height="@dimen/_45dp"
         android:padding="5dp"
-        android:textSize="16sp" />
+        android:background="@drawable/edit_bg"
+        android:hint="密码"
+        android:textSize="16sp"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_tags"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"/>
 
-    <include layout="@layout/dialog_bottom_btns" />
+    <include layout="@layout/dialog_bottom_btns"/>
 
 </LinearLayout>

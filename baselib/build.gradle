@@ -37,9 +37,8 @@ dependencies {
     api deps.support.app_compat
     api deps.support.recyclerview
     api deps.constraint_layout
-
-    api deps.okhttp.okhttp
-    api deps.okhttp.okio
+    api deps.retrofit.retrofit
+    api deps.retrofit.gson
 
     api deps.support.multidex
     api deps.tencent.bugly_upgrade

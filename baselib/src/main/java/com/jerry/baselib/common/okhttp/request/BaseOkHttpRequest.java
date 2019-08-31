@@ -27,10 +27,9 @@ public abstract class BaseOkHttpRequest {
         if (this.headers == null) {
             this.headers = new LinkedHashMap<>();
         }
-        this.headers.put("user_token", "59e498a0-63db-11e9-b72b-b96f5f7d329a");
+        this.headers.put("user_token", "a92bb460-cb30-11e9-a9f3-11ed978d72b7");
         this.headers.put("Content-Type", "application/json");
         this.headers.put("cache-control", "no-cache");
-        this.headers.put("Postman-Token", "b7795e6e-0d63-460a-867e-e4ff942a3aa3");
         if (url == null) {
             throw new IllegalArgumentException("url can not be null.");
         }

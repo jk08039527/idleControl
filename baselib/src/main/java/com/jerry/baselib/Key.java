@@ -9,6 +9,7 @@ public class Key {
 
     public static final String USER_INFO = "user_info";
 
+    public static final String ZERO = "0";
     public static final String DATA = "data";
     public static final String TYPE = "type";
     public static final String NIL = "";
