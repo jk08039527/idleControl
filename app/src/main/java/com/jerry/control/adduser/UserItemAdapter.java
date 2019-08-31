@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.jerry.baselib.common.base.BaseRecyclerAdapter;
 import com.jerry.baselib.common.base.RecyclerViewHolder;
 import com.jerry.control.R;
-import com.jerry.control.bean.User;
+import com.jerry.control.bean.ResposenseUser;
 
 /**
  * @author Jerry
@@ -16,9 +16,9 @@ import com.jerry.control.bean.User;
  * @copyright www.aniu.tv
  * @description
  */
-class UserItemAdapter extends BaseRecyclerAdapter<User> {
+class UserItemAdapter extends BaseRecyclerAdapter<ResposenseUser> {
 
-    public UserItemAdapter(Context context, List<User> data) {
+    public UserItemAdapter(Context context, List<ResposenseUser> data) {
         super(context, data);
     }
 
@@ -28,7 +28,7 @@ class UserItemAdapter extends BaseRecyclerAdapter<User> {
     }
 
     @Override
-    public void convert(RecyclerViewHolder holder, int position, int viewType, User bean) {
+    public void convert(RecyclerViewHolder holder, int position, int viewType, ResposenseUser bean) {
         TextView title = holder.getView(R.id.tv_title);
         TextView content = holder.getView(R.id.tv_content);
         title.setText(bean.getUsername());

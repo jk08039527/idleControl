@@ -5,7 +5,7 @@ import java.util.List;
 import com.jerry.baselib.common.retrofit.calladapter.RCall;
 import com.jerry.baselib.common.retrofit.response.BaseResponse;
 import com.jerry.control.bean.BaseRequest;
-import com.jerry.control.bean.User;
+import com.jerry.control.bean.ResposenseUser;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 
@@ -29,5 +29,5 @@ public interface Api {
      * 查询列表
      */
     @POST(API)
-    RCall<BaseResponse<List<User>>> getList(@Body BaseRequest body);
+    RCall<BaseResponse<List<ResposenseUser>>> getList(@Body BaseRequest body);
 }

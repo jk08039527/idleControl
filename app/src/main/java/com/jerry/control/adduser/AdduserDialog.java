@@ -22,8 +22,8 @@ import com.jerry.baselib.common.weidgt.BaseDialog;
 import com.jerry.control.Api;
 import com.jerry.control.R;
 import com.jerry.control.bean.BaseRequest;
+import com.jerry.control.bean.RequestUser;
 import com.jerry.control.bean.SelectBean;
-import com.jerry.control.bean.User;
 
 /**
  * @author Jerry
@@ -38,7 +38,7 @@ public class AdduserDialog extends BaseDialog implements BaseRecyclerAdapter.OnI
     private EditText etPwd;
     private TagItemAdapter mAdapter;
     private List<SelectBean> mData = new ArrayList<>();
-    private OnDataChangedListener<User> mOnDataChangedListener;
+    private OnDataChangedListener<RequestUser> mOnDataChangedListener;
 
     public AdduserDialog(Context context) {
         super(context);
@@ -81,13 +81,13 @@ public class AdduserDialog extends BaseDialog implements BaseRecyclerAdapter.OnI
                     break;
                 }
             }
-            List<User> users = new ArrayList<>();
-            User user = new User();
+            List<RequestUser> users = new ArrayList<>();
+            RequestUser user = new RequestUser();
             user.setUsername(etPhone.getText().toString());
             user.setUserpwd(etPwd.getText().toString());
-            user.setLevel(selext);
+            user.setLevel(selext + 1);
             users.add(user);
-            BaseRequest<User> userBaseRequest = new BaseRequest<>();
+            BaseRequest<RequestUser> userBaseRequest = new BaseRequest<>();
             userBaseRequest.setMethod("User\\Login.createAbc123");
             userBaseRequest.setParams(users);
             RetrofitHelper.getInstance().getApi(Api.class).addUser(userBaseRequest)
@@ -118,7 +118,7 @@ public class AdduserDialog extends BaseDialog implements BaseRecyclerAdapter.OnI
         });
     }
 
-    public void setOnDataChangedListener(OnDataChangedListener<User> onDataChangedListener) {
+    public void setOnDataChangedListener(OnDataChangedListener<RequestUser> onDataChangedListener) {
         mOnDataChangedListener = onDataChangedListener;
     }
 

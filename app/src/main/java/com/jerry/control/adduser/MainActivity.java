@@ -17,9 +17,9 @@ import com.jerry.baselib.common.util.LogUtils;
 import com.jerry.control.Api;
 import com.jerry.control.R;
 import com.jerry.control.bean.BaseRequest;
-import com.jerry.control.bean.User;
+import com.jerry.control.bean.ResposenseUser;
 
-public class MainActivity extends BaseRecyclerActivity<User> implements BaseRecyclerAdapter.OnItemLongClickListener {
+public class MainActivity extends BaseRecyclerActivity<ResposenseUser> implements BaseRecyclerAdapter.OnItemLongClickListener {
 
     @Override
     protected void initView() {
@@ -29,7 +29,7 @@ public class MainActivity extends BaseRecyclerActivity<User> implements BaseRecy
     }
 
     @Override
-    protected BaseRecyclerAdapter<User> initAdapter() {
+    protected BaseRecyclerAdapter<ResposenseUser> initAdapter() {
         UserItemAdapter userItemAdapter = new UserItemAdapter(this, mData);
         userItemAdapter.setOnItemLongClickListener(this);
         return userItemAdapter;
@@ -37,20 +37,20 @@ public class MainActivity extends BaseRecyclerActivity<User> implements BaseRecy
 
     @Override
     protected void getData() {
-        BaseRequest<User> userBaseRequest = new BaseRequest<>();
+        BaseRequest<ResposenseUser> userBaseRequest = new BaseRequest<>();
         userBaseRequest.setMethod("User\\Login.getListBzm123");
         RetrofitHelper.getInstance().getApi(Api.class).getList(userBaseRequest)
-            .execute(new RetrofitCallBack<BaseResponse<List<User>>>() {
+            .execute(new RetrofitCallBack<BaseResponse<List<ResposenseUser>>>() {
                 @Override
-                public void onResponse(final BaseResponse<List<User>> response) {
+                public void onResponse(final BaseResponse<List<ResposenseUser>> response) {
                     if (isFinishing()) {
                         return;
                     }
-                    ResponseResult<List<User>> result = response.getResult();
+                    ResponseResult<List<ResposenseUser>> result = response.getResult();
                     if (result == null) {
                         return;
                     }
-                    List<User> users = result.getData();
+                    List<ResposenseUser> users = result.getData();
                     mData.clear();
                     mData.addAll(users);
                     mAdapter.notifyDataSetChanged();
@@ -87,7 +87,7 @@ public class MainActivity extends BaseRecyclerActivity<User> implements BaseRecy
 
     @Override
     public void onItemClick(View itemView, int position) {
-        User user = mData.get(position);
+        ResposenseUser user = mData.get(position);
         AdduserDialog adduserDialog = new AdduserDialog(this);
         adduserDialog.setOnDataChangedListener(data -> reload());
         adduserDialog.show();

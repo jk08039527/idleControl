@@ -6,7 +6,7 @@ package com.jerry.control.bean;
  * @copyright www.aniu.tv
  * @description
  */
-public class User {
+public class ResposenseUser {
 
     /**
      * user_id : 3
@@ -31,7 +31,6 @@ public class User {
     private int user_id;
     private String username;
     private String userpwd;
-    private int level;
     private String nickname;
     private String email;
     private String phone;
@@ -69,14 +68,6 @@ public class User {
 
     public void setUserpwd(String userpwd) {
         this.userpwd = userpwd;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(final int level) {
-        this.level = level;
     }
 
     public String getNickname() {
