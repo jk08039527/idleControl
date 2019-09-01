@@ -19,7 +19,7 @@ import com.jerry.baselib.common.util.LogUtils;
 import com.jerry.baselib.common.util.OnDataChangedListener;
 import com.jerry.baselib.common.util.ToastUtil;
 import com.jerry.baselib.common.weidgt.BaseDialog;
-import com.jerry.control.Api;
+import com.jerry.control.bean.Api;
 import com.jerry.control.R;
 import com.jerry.control.bean.BaseRequest;
 import com.jerry.control.bean.RequestUser;
@@ -91,10 +91,10 @@ public class AdduserDialog extends BaseDialog implements BaseRecyclerAdapter.OnI
             userBaseRequest.setMethod("User\\Login.createAbc123");
             userBaseRequest.setParams(users);
             RetrofitHelper.getInstance().getApi(Api.class).addUser(userBaseRequest)
-                .execute(new RetrofitCallBack<BaseResponse<Boolean>>() {
+                .execute(new RetrofitCallBack<BaseResponse>() {
                     @Override
-                    public void onResponse(final BaseResponse<Boolean> response) {
-                        ResponseResult<Boolean> result = response.getResult();
+                    public void onResponse(final BaseResponse response) {
+                        ResponseResult result = response.getResult();
                         if (result == null) {
                             return;
                         }

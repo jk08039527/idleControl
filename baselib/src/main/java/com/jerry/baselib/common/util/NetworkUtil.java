@@ -1,15 +1,5 @@
 package com.jerry.baselib.common.util;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.nio.charset.StandardCharsets;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -18,14 +8,9 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
 
-import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.JSONObject;
 import com.jerry.baselib.BaseApp;
 import com.jerry.baselib.Key;
 import com.jerry.baselib.R;
-import com.jerry.baselib.common.okhttp.OkHttpUtils;
-import com.jerry.baselib.common.okhttp.callback.Callback;
-import okhttp3.Response;
 
 /**
  * Created by wzl on 2018/8/26.
@@ -205,38 +190,5 @@ public class NetworkUtil {
             default:
                 return "未知信息";
         }
-    }
-
-    /**
-     * 获取IP地址
-     */
-    public static void getNetIp(OnDataChangedListener<String> onDataChangedListener) {
-        if (onDataChangedListener == null) {
-            return;
-        }
-        if (!NetworkUtil.isNetworkAvailable()) {
-            onDataChangedListener.onDataChanged(null);
-            return;
-        }
-        OkHttpUtils.get().url("http://pv.sohu.com/cityjson?ie=utf-8").build().enqueue(new Callback<String>() {
-            @Override
-            public String parseNetworkResponse(final Response response) throws IOException {
-                String content = response.body().string();
-                LogUtils.d(content);
-                String ip = null;
-                int start = content.indexOf("{");
-                int end = content.indexOf("}");
-                String json = content.substring(start, end + 1);
-                try {
-                    JSONObject jsonObject = JSONObject.parseObject(json);
-                    ip = jsonObject.getString("cip");
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                String finalIp = ip;
-                OkHttpUtils.getInstance().getDelivery().post(() -> onDataChangedListener.onDataChanged(finalIp));
-                return ip;
-            }
-        });
     }
 }

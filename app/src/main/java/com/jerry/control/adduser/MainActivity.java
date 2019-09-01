@@ -14,7 +14,7 @@ import com.jerry.baselib.common.retrofit.callback.RetrofitCallBack;
 import com.jerry.baselib.common.retrofit.response.BaseResponse;
 import com.jerry.baselib.common.retrofit.response.ResponseResult;
 import com.jerry.baselib.common.util.LogUtils;
-import com.jerry.control.Api;
+import com.jerry.control.bean.Api;
 import com.jerry.control.R;
 import com.jerry.control.bean.BaseRequest;
 import com.jerry.control.bean.ResposenseUser;
