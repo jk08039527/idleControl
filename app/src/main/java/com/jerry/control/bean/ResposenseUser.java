@@ -9,23 +9,8 @@ package com.jerry.control.bean;
 public class ResposenseUser {
 
     /**
-     * user_id : 3
-     * username : oyp
-     * userpwd : fcea920f7412b5da7be0cf42b8c93759
-     * nickname :
-     * email :
-     * phone :
-     * namecn :
-     * nameen :
-     * is_delete : 0
-     * create_time : 1555810808
-     * update_time : 1555812223
-     * delete_time : 1555810808
-     * role_id : 2
-     * is_lock : 0
-     * lock_time : 0
-     * error_times : 0
-     * active_time : 1567068671
+     * user_id : 3 username : oyp userpwd : fcea920f7412b5da7be0cf42b8c93759 nickname : email : phone : namecn : nameen : is_delete : 0 create_time :
+     * 1555810808 update_time : 1555812223 delete_time : 1555810808 role_id : 2 is_lock : 0 lock_time : 0 error_times : 0 active_time : 1567068671
      */
 
     private int user_id;
@@ -37,9 +22,9 @@ public class ResposenseUser {
     private String namecn;
     private String nameen;
     private int is_delete;
-    private int create_time;
-    private int update_time;
-    private int delete_time;
+    private long create_time;
+    private long update_time;
+    private long delete_time;
     private int role_id;
     private int is_lock;
     private int lock_time;
@@ -50,7 +35,7 @@ public class ResposenseUser {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(final int user_id) {
         this.user_id = user_id;
     }
 
@@ -58,7 +43,7 @@ public class ResposenseUser {
         return username;
     }
 
-    public void setUsername(String username) {
+    public void setUsername(final String username) {
         this.username = username;
     }
 
@@ -66,7 +51,7 @@ public class ResposenseUser {
         return userpwd;
     }
 
-    public void setUserpwd(String userpwd) {
+    public void setUserpwd(final String userpwd) {
         this.userpwd = userpwd;
     }
 
@@ -74,7 +59,7 @@ public class ResposenseUser {
         return nickname;
     }
 
-    public void setNickname(String nickname) {
+    public void setNickname(final String nickname) {
         this.nickname = nickname;
     }
 
@@ -82,7 +67,7 @@ public class ResposenseUser {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(final String email) {
         this.email = email;
     }
 
@@ -90,7 +75,7 @@ public class ResposenseUser {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(final String phone) {
         this.phone = phone;
     }
 
@@ -98,7 +83,7 @@ public class ResposenseUser {
         return namecn;
     }
 
-    public void setNamecn(String namecn) {
+    public void setNamecn(final String namecn) {
         this.namecn = namecn;
     }
 
@@ -106,7 +91,7 @@ public class ResposenseUser {
         return nameen;
     }
 
-    public void setNameen(String nameen) {
+    public void setNameen(final String nameen) {
         this.nameen = nameen;
     }
 
@@ -114,31 +99,31 @@ public class ResposenseUser {
         return is_delete;
     }
 
-    public void setIs_delete(int is_delete) {
+    public void setIs_delete(final int is_delete) {
         this.is_delete = is_delete;
     }
 
-    public int getCreate_time() {
+    public long getCreate_time() {
         return create_time;
     }
 
-    public void setCreate_time(int create_time) {
+    public void setCreate_time(final long create_time) {
         this.create_time = create_time;
     }
 
-    public int getUpdate_time() {
+    public long getUpdate_time() {
         return update_time;
     }
 
-    public void setUpdate_time(int update_time) {
+    public void setUpdate_time(final long update_time) {
         this.update_time = update_time;
     }
 
-    public int getDelete_time() {
+    public long getDelete_time() {
         return delete_time;
     }
 
-    public void setDelete_time(int delete_time) {
+    public void setDelete_time(final long delete_time) {
         this.delete_time = delete_time;
     }
 
@@ -146,7 +131,7 @@ public class ResposenseUser {
         return role_id;
     }
 
-    public void setRole_id(int role_id) {
+    public void setRole_id(final int role_id) {
         this.role_id = role_id;
     }
 
@@ -154,7 +139,7 @@ public class ResposenseUser {
         return is_lock;
     }
 
-    public void setIs_lock(int is_lock) {
+    public void setIs_lock(final int is_lock) {
         this.is_lock = is_lock;
     }
 
@@ -162,7 +147,7 @@ public class ResposenseUser {
         return lock_time;
     }
 
-    public void setLock_time(int lock_time) {
+    public void setLock_time(final int lock_time) {
         this.lock_time = lock_time;
     }
 
@@ -170,7 +155,7 @@ public class ResposenseUser {
         return error_times;
     }
 
-    public void setError_times(int error_times) {
+    public void setError_times(final int error_times) {
         this.error_times = error_times;
     }
 
@@ -178,7 +163,7 @@ public class ResposenseUser {
         return active_time;
     }
 
-    public void setActive_time(int active_time) {
+    public void setActive_time(final int active_time) {
         this.active_time = active_time;
     }
 }

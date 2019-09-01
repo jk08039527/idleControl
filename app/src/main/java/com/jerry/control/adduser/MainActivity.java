@@ -2,9 +2,6 @@ package com.jerry.control.adduser;
 
 import java.util.List;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.view.View;
 
 import com.jerry.baselib.common.base.BaseRecyclerActivity;
@@ -14,12 +11,12 @@ import com.jerry.baselib.common.retrofit.callback.RetrofitCallBack;
 import com.jerry.baselib.common.retrofit.response.BaseResponse;
 import com.jerry.baselib.common.retrofit.response.ResponseResult;
 import com.jerry.baselib.common.util.LogUtils;
-import com.jerry.control.bean.Api;
 import com.jerry.control.R;
+import com.jerry.control.bean.Api;
 import com.jerry.control.bean.BaseRequest;
 import com.jerry.control.bean.ResposenseUser;
 
-public class MainActivity extends BaseRecyclerActivity<ResposenseUser> implements BaseRecyclerAdapter.OnItemLongClickListener {
+public class MainActivity extends BaseRecyclerActivity<ResposenseUser> {
 
     @Override
     protected void initView() {
@@ -30,9 +27,7 @@ public class MainActivity extends BaseRecyclerActivity<ResposenseUser> implement
 
     @Override
     protected BaseRecyclerAdapter<ResposenseUser> initAdapter() {
-        UserItemAdapter userItemAdapter = new UserItemAdapter(this, mData);
-        userItemAdapter.setOnItemLongClickListener(this);
-        return userItemAdapter;
+        return new UserItemAdapter(this, mData);
     }
 
     @Override
@@ -87,22 +82,5 @@ public class MainActivity extends BaseRecyclerActivity<ResposenseUser> implement
 
     @Override
     public void onItemClick(View itemView, int position) {
-        ResposenseUser user = mData.get(position);
-        AdduserDialog adduserDialog = new AdduserDialog(this);
-        adduserDialog.setOnDataChangedListener(data -> reload());
-        adduserDialog.show();
-    }
-
-    @Override
-    public void onItemLongClick(View itemView, int position) {
-        ClipboardManager cm = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-        if (cm == null) {
-            toast("复制失败");
-            return;
-        }
-        ClipData mClipData = ClipData.newPlainText("Label", mData.get(position).getUserpwd());
-        //将ClipData内容放到系统剪贴板里
-        cm.setPrimaryClip(mClipData);
-        toast("激活码已复制");
     }
 }

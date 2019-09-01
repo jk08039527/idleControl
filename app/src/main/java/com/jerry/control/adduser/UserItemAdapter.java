@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.jerry.baselib.common.base.BaseRecyclerAdapter;
 import com.jerry.baselib.common.base.RecyclerViewHolder;
+import com.jerry.baselib.common.util.DateUtils;
 import com.jerry.control.R;
 import com.jerry.control.bean.ResposenseUser;
 
@@ -32,6 +33,6 @@ class UserItemAdapter extends BaseRecyclerAdapter<ResposenseUser> {
         TextView title = holder.getView(R.id.tv_title);
         TextView content = holder.getView(R.id.tv_content);
         title.setText(bean.getUsername());
-        content.setText(bean.getUserpwd());
+        content.setText(String.format("更新时间：%s", DateUtils.getDateWTimeByLong(bean.getUpdate_time() * 1000)));
     }
 }
