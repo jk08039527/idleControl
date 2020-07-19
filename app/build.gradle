@@ -22,11 +22,11 @@ android {
         }
     }
 
-    compileSdkVersion build_versions.target_sdk
+    compileSdkVersion 29
     defaultConfig {
         applicationId packer.APPLICATION_ID
-        minSdkVersion build_versions.min_sdk
-        targetSdkVersion build_versions.target_sdk
+        minSdkVersion 19
+        targetSdkVersion 29
         versionCode packer.VERSION_CODE
         versionName packer.VERSION_NAME
         multiDexEnabled = true
@@ -88,7 +88,7 @@ android {
         }
         debug {
             minifyEnabled false
-            signingConfig signingConfigs.config
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
 

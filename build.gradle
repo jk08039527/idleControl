@@ -8,9 +8,9 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath deps.android_gradle_plugin
-        classpath deps.and_resguard_plugin
-        classpath deps.tinker_support_plugin
+        classpath "com.android.tools.build:gradle:3.3.2"
+        classpath "com.tencent.mm:AndResGuard-gradle-plugin:1.2.15"
+        classpath "com.tencent.bugly:tinker-support:1.1.5"
     }
 }
 

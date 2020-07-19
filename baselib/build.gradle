@@ -1,11 +1,11 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion build_versions.target_sdk
+    compileSdkVersion 29
 
     defaultConfig {
-        minSdkVersion build_versions.min_sdk
-        targetSdkVersion build_versions.target_sdk
+        minSdkVersion 19
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         multiDexEnabled = true
@@ -33,17 +33,23 @@ android {
 
 dependencies {
     api fileTree(dir: 'libs', include: ['*.jar'])
-    api deps.support.v4
-    api deps.support.app_compat
-    api deps.support.recyclerview
-    api deps.constraint_layout
-    api deps.retrofit.retrofit
-    api deps.retrofit.gson
-
-    api deps.support.multidex
-    api deps.tencent.bugly_upgrade
-    api deps.tencent.bugly_nativecrashreport
-    api deps.tencent.bugly_tinker
-    api deps.glide
-    api deps.fastjson
+    api "androidx.legacy:legacy-support-v4:1.0.0"
+    api "androidx.appcompat:appcompat:1.1.0"
+    api "androidx.recyclerview:recyclerview:1.1.0"
+    api "androidx.constraintlayout:constraintlayout:1.1.3"
+    api "androidx.multidex:multidex:2.0.1"
+    api "com.tencent.bugly:crashreport_upgrade:1.3.6"
+    api "com.tencent.bugly:nativecrashreport:3.3.1"
+    api "com.tencent.tinker:tinker-android-lib:1.9.9"
+    api "io.reactivex.rxjava2:rxjava:2.2.6"
+    api "io.reactivex.rxjava2:rxandroid:2.1.1"
+    api "com.trello.rxlifecycle2:rxlifecycle-android-lifecycle:2.2.2"
+    api 'com.squareup.retrofit2:retrofit:2.4.0'
+    api 'com.squareup.retrofit2:converter-gson:2.4.0'
+    api 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
+    api "com.alibaba:fastjson:1.1.71.android"
+    api "org.greenrobot:greendao:3.2.2"
+    api "com.github.bumptech.glide:glide:4.10.0"
+    api "org.jsoup:jsoup:1.12.1"
+    api "org.greenrobot:eventbus:3.0.0"
 }
